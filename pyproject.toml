@@ -30,7 +30,7 @@ dependencies = [
     "pydantic>=2.10,<3",
     "pyobjc-core>=12.0,<13",
     "pyobjc-framework-EventKit>=12.0,<13",
-    "pyobjc-framework-Foundation>=12.0,<13",
+    "pyobjc-framework-Cocoa>=12.0,<13",
 ]
 
 [project.optional-dependencies]

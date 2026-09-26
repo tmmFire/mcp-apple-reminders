@@ -22,6 +22,10 @@ Spec 002 is fully shipped (41 tools, phases 0–5). This session runs the CL-1 c
 Before code: read `AGENTS.md` → this file §0/§2/§3 → the audit synthesis `docs/audits/2026-05-29-post-spec-002-cleanup-audit/05-verify-and-expert-review-synthesis.md`. Prior session history (spec-002 build) lives in `CHANGELOG.md` + git log. Session memories worth reading: `mem:core`, `mem:suggested_commands`, `mem:task_completion`, `mem:global/agent_model_policy`.
 
 
+## [0.5.1] — 2026-09-26 — Agent: Codex
+### Fixed
+- Fix PyObjC Foundation dependency package name to pyobjc-framework-Cocoa
+
 ## [0.5.0] — 2026-09-26 — Agent: Codex
 ### Added
 - Add bulk_create_reminders with ordered results and per-item failures
