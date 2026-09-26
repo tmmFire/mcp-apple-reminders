@@ -15,7 +15,7 @@ Pydantic v2 · PyObjC/EventKit + compiled Swift/Obj-C helper subprocesses.
 | Lifespan | Async lifespan → `AppContext` (SQLite path, helper paths, `open_sqlite()`) | `src/mcp_apple_reminders/lifespan.py` | @pierce |
 | Models | Frozen Pydantic v2 (`Reminder`, `Calendar`, …) + deeplinks (CONTRACT FREEZE) | `src/mcp_apple_reminders/models.py` | @pierce |
 | Formatting | Datetime / priority parsing helpers | `src/mcp_apple_reminders/formatting.py` | @pierce |
-| Tools (17 modules, 58 tools) | `@mcp.tool` functions per domain | `src/mcp_apple_reminders/tools/` | @pierce |
+| Tools (17 modules, 59 tools) | `@mcp.tool` functions per domain | `src/mcp_apple_reminders/tools/` | @pierce |
 | Resources (8 views) | Read-only SQLite-backed `@mcp.resource` views | `src/mcp_apple_reminders/resources/` | @pierce |
 | Prompts (5) | Canned `@mcp.prompt` workflows | `src/mcp_apple_reminders/prompts/workflows.py` | @pierce |
 | Native — SQLite reads | Direct CoreData SQLite reader + row→model helpers | `src/mcp_apple_reminders/_native/sqlite.py`, `_sqlite_helpers.py` | @pierce |
@@ -35,7 +35,7 @@ Pydantic v2 · PyObjC/EventKit + compiled Swift/Obj-C helper subprocesses.
 | `workflow.py` | 6 | move_reminder_{active,on_deck,blocked,done,to_list}, get_workflow_lists |
 | `groups.py` | 4 | create_group, list_groups, delete_group, move_list_to_group |
 | `alarms.py` | 3 | set_alarm, set_location_alarm, set_recurrence |
-| `bulk.py` | 3 | bulk_complete, bulk_move, bulk_delete_completed |
+| `bulk.py` | 4 | bulk_create_reminders, bulk_complete, bulk_move, bulk_delete_completed |
 | `sections.py` | 3 | get_subtasks, set_parent, assign_section |
 | `smartlists.py` | 3 | create_smart_list, update_smart_list, delete_smart_list |
 | `appearance.py` | 3 | set_list_appearance, set_list_pinned, set_smart_list_pinned |

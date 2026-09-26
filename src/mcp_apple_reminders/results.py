@@ -94,6 +94,27 @@ class BulkResult(_Result):
     window: Optional[BulkWindow] = None
 
 
+class BulkCreateFailure(_Result):
+    """One failed input from ``bulk_create_reminders``."""
+
+    model_config = ConfigDict(frozen=True)
+
+    input_index: int
+    title: str
+    error: str
+
+
+class BulkCreateResult(_Result):
+    """Per-item creation outcome from ``bulk_create_reminders``."""
+
+    model_config = ConfigDict(frozen=True)
+
+    processed: int
+    created: list[Reminder] = Field(default_factory=list)
+    failed: list[BulkCreateFailure] = Field(default_factory=list)
+    target_calendar_id: str
+
+
 class TriageResult(_Result):
     """Proposed routing produced by ``triage_brain_dump`` (read-only).
 

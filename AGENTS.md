@@ -31,7 +31,7 @@ Grant Reminders permission on first launch — approve the macOS dialog when `ve
 src/mcp_apple_reminders/        FastMCP server (server.py) + lifespan.py + models.py + formatting.py
 src/mcp_apple_reminders/tools/  17 @mcp.tool modules: calendars, reminders, completion, queries,
                                 workflow, groups, alarms, bulk, sections, smartlists, appearance,
-                                templates, flags, attachments, grocery, agents, sampling (58 tools)
+                                templates, flags, attachments, grocery, agents, sampling (59 tools)
 src/mcp_apple_reminders/resources/  @mcp.resource SQLite views (e.g. agents://current/{project})
 src/mcp_apple_reminders/prompts/    @mcp.prompt canned workflows
 src/mcp_apple_reminders/_native/    Three-tier native layer: sqlite.py (+ _sqlite_helpers) = reads;

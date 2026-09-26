@@ -12,14 +12,14 @@ an Objective-C ReminderKit helper). See [Architecture](#architecture).
 
 ## Features
 
-- **58 MCP tools** across 17 modules (full catalog in [`docs/TOOLS.md`](docs/TOOLS.md)).
+- **59 MCP tools** across 17 modules (full catalog in [`docs/TOOLS.md`](docs/TOOLS.md)).
 - **Calendar/list management** — create, delete, update, search lists.
 - **Reminder CRUD** — create, update, complete/uncomplete, delete, fetch by ID.
 - **Rich queries** — today, overdue, next-up, completed-in-range, text search, filters.
 - **Workflow board** — move reminders across Pierce's `Claude-*` lists.
 - **Sidebar groups** — create/list/delete folders and move lists into them.
 - **Alarms & recurrence** — time alarms, location alarms, repeat rules.
-- **Bulk operations** — complete, move, and purge-completed in one call.
+- **Bulk operations** — create, complete, move, and purge-completed in one call.
 - **Subtasks, sections & tags** — hierarchy and grouping via the ReminderKit helper.
 - **MCP Resources, Prompts, Elicitation, Sampling, and progress reporting** (see below).
 - **Deeplinks** — every Reminder and Calendar carries an `x-apple-reminderkit://` deeplink.
@@ -137,7 +137,7 @@ Without the grant the server cannot read or write reminders.
 
 ## Tools, Resources & Prompts
 
-The 58 tools are grouped into 17 modules under `src/mcp_apple_reminders/tools/`.
+The 59 tools are grouped into 17 modules under `src/mcp_apple_reminders/tools/`.
 The exhaustive, always-current catalog (parameters + return shapes) lives in
 [`docs/TOOLS.md`](docs/TOOLS.md). Summary by category:
 
@@ -150,7 +150,7 @@ The exhaustive, always-current catalog (parameters + return shapes) lives in
 | **workflow** | 6 | move across `Claude-*` board lists; list the board |
 | **groups** | 4 | create/list/delete sidebar folders; move a list into a group |
 | **alarms** | 3 | time alarm, location alarm, recurrence rule |
-| **bulk** | 3 | bulk complete, bulk move, bulk delete-completed |
+| **bulk** | 4 | bulk create, bulk complete, bulk move, bulk delete-completed |
 | **sections** | 3 | get subtasks, set parent, assign section |
 | **smartlists** | 3 | create/update/delete custom smart lists |
 | **appearance** | 3 | list/smart-list appearance + pinning |

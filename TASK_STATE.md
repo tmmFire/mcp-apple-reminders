@@ -74,8 +74,8 @@ All slices across Phases 0–5 are ✅ done: S0.1–S0.6, S1.0–S1.8, S2.1–S2
 
 ## 6. Handoff note
 
-**2026-06-06 (TASK_STATE cleanup — archived stale §5/§6 to CHANGELOG.md):**
+**2026-09-26 (bulk-create extension):**
 
-Everything through CL-2.13 + the full integration suite (175 checks) is shipped and pushed. Current state is v0.1.101 on `main`. 58 tools / 8 resources / 5 prompts / 2 ADRs. The only non-shipped item is S4.2 (TodoWrite mirror — stretch, no host surface yet).
+Added `bulk_create_reminders`, which creates ordered top-level reminders in one list and returns created reminders plus indexed per-item failures. Current capability count is 59 tools / 8 resources / 5 prompts / 2 ADRs. The only previously deferred item remains S4.2 (TodoWrite mirror — stretch, no host surface yet).
 
 Reading order for a fresh agent: `AGENTS.md` → this file §0 (the TL;DR is comprehensive) → `docs/audits/2026-05-29-post-spec-002-cleanup-audit/05-verify-and-expert-review-synthesis.md` for cleanup context. Prior build history: `CHANGELOG.md` + git log.

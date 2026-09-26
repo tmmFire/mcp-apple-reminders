@@ -1,12 +1,12 @@
 """Bulk-operation tools — Slice 3.4.
 
-Three operations wrap the existing per-item paths (`update_reminder`,
+Four operations wrap the existing per-item paths (`create_reminder`, `update_reminder`,
 `delete_reminder`, `move_reminder`) with `_native/bulk.py::bulk_iter`
 progress reporting + elicitation guards on the destructive call
 (`bulk_delete_completed`).
 
-All three return a structured `{ "processed": int, "failed": list[dict] }`
-report so the caller can show a per-item outcome.
+Every operation returns a structured per-item report so the caller can show
+successful writes and failures without retrying an uncertain whole batch.
 """
 
 from __future__ import annotations
@@ -15,15 +15,86 @@ from datetime import datetime
 from typing import Optional
 
 from mcp.server.fastmcp import Context
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .._native.bulk import bulk_iter
 from .._native.sqlite import Reader, RemindersDBUnavailable
+from ..formatting import parse_datetime, parse_priority
 from ..lifespan import app_context as _app_context
-from ..models import Reminder
-from ..results import BulkResult, BulkWindow
+from ..models import Reminder, native_reminder_to_pydantic
+from ..results import BulkCreateFailure, BulkCreateResult, BulkResult, BulkWindow
 from ..server import mcp
-from ._annotations import DESTROY, MUTATE
+from ._annotations import CREATE, DESTROY, MUTATE
+
+
+class ReminderCreateInput(BaseModel):
+    """One top-level reminder to create in a bulk request."""
+
+    title: str = Field(min_length=1, description="The title/name of the reminder.")
+    due_date: Optional[str] = Field(
+        default=None,
+        description="Due date as an ISO 8601 datetime string, e.g. '2026-06-15T09:00:00'.",
+    )
+    notes: Optional[str] = Field(default=None, description="Free-form notes/body for the reminder.")
+    priority: Optional[str] = Field(
+        default=None,
+        description="Priority: 'none', 'low', 'medium', 'high', or an integer 0-9.",
+    )
+    url: Optional[str] = Field(default=None, description="A URL to associate with the reminder.")
+
+
+@mcp.tool(
+    name="bulk_create_reminders",
+    title="Bulk Create Reminders",
+    annotations=CREATE,
+    description=(
+        "Create multiple top-level reminders in one Apple Reminders list. "
+        "Preserves input order and returns every created reminder plus an "
+        "indexed failure for each item that could not be created. This call "
+        "is non-idempotent; read the target list first to avoid duplicates."
+    ),
+)
+async def bulk_create_reminders(
+    reminders: list[ReminderCreateInput],
+    calendar_id: str,
+    ctx: Context,
+) -> BulkCreateResult:
+    """Create multiple reminders while isolating failures per input item."""
+    if not reminders:
+        return BulkCreateResult(processed=0, created=[], failed=[], target_calendar_id=calendar_id)
+
+    app = _app_context(ctx)
+    created: list[Reminder] = []
+    failed: list[BulkCreateFailure] = []
+    indexed_reminders = list(enumerate(reminders))
+
+    async for index, item in bulk_iter(
+        indexed_reminders,
+        ctx,
+        label="Creating reminder",
+        total=len(indexed_reminders),
+    ):
+        try:
+            kwargs: dict = {"title": item.title, "calendar_id": calendar_id}
+            if item.due_date:
+                kwargs["due_date"] = parse_datetime(item.due_date)
+            if item.notes is not None:
+                kwargs["notes"] = item.notes
+            if item.priority:
+                kwargs["priority"] = parse_priority(item.priority)
+            if item.url is not None:
+                kwargs["url"] = item.url
+            created.append(native_reminder_to_pydantic(app.bridge.create_reminder(**kwargs)))
+        except Exception as e:  # noqa: BLE001 — per-item failures surface in the report.
+            failed.append(BulkCreateFailure(input_index=index, title=item.title, error=str(e)))
+
+    await ctx.info(f"bulk_create_reminders: processed={len(created)} failed={len(failed)}")
+    return BulkCreateResult(
+        processed=len(created),
+        created=created,
+        failed=failed,
+        target_calendar_id=calendar_id,
+    )
 
 
 @mcp.tool(

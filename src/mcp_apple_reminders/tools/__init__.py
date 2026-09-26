@@ -13,7 +13,7 @@ Layout:
 - `workflow.py` — Claude-* workflow-list move + lookup tools.
 - `groups.py` — list-group (sidebar folder) tools.
 - `alarms.py` — time/location alarm + recurrence tools.
-- `bulk.py` — bulk complete/move/delete-completed tools.
+- `bulk.py` — bulk create/complete/move/delete-completed tools.
 - `sections.py` — subtask/parent/section tools.
 - `smartlists.py` — custom smart-list create/update/delete + pin tools.
 - `appearance.py` — list/group appearance + pinning tools.

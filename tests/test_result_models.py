@@ -14,7 +14,7 @@ import asyncio
 import pytest
 from pydantic import ValidationError
 
-from mcp_apple_reminders.results import BulkResult, DeleteResult, WriteResult
+from mcp_apple_reminders.results import BulkCreateResult, BulkResult, DeleteResult, WriteResult
 
 # Tools converted from `-> dict` to a typed result model in CL-2.11, mapped to
 # their expected output-schema title. A revert to a bare dict drops the schema
@@ -28,6 +28,7 @@ _CONVERTED = {
     "bulk_complete": "BulkResult",
     "bulk_move": "BulkResult",
     "bulk_delete_completed": "BulkResult",
+    "bulk_create_reminders": "BulkCreateResult",
     "set_urgent": "WriteResult",
     "set_early_reminder": "WriteResult",
     "add_section_and_assign": "WriteResult",
@@ -83,6 +84,16 @@ def test_bulk_result_coerces_failures() -> None:
     b = BulkResult.of(processed=1, failed=[{"id": "x", "error": "boom"}])
     assert b.failed[0].id == "x"
     assert b.failed[0].error == "boom"
+
+
+def test_bulk_create_result_coerces_failures() -> None:
+    b = BulkCreateResult(
+        processed=0,
+        failed=[{"input_index": 2, "title": "Milk", "error": "boom"}],
+        target_calendar_id="cal-1",
+    )
+    assert b.failed[0].input_index == 2
+    assert b.failed[0].title == "Milk"
 
 
 def test_result_models_are_frozen() -> None:
